@@ -1,0 +1,282 @@
+
+	{{include "admin/public/header.html"}}
+	<style>
+		.form-horizontal .form-group{
+			height: 44px;
+		}
+	</style>
+	<body>
+		{{include "admin/public/nav_top.html"}}
+
+		<div class="main-container" id="main-container">
+			<script type="text/javascript">
+				try{ace.settings.check('main-container' , 'fixed')}catch(e){}
+			</script>
+
+			<div class="main-container-inner">
+				<a class="menu-toggler" id="menu-toggler" href="#">
+					<span class="menu-text"></span>
+				</a>
+
+				{{include "admin/public/nav_left.html"}}
+
+				<div class="main-content">
+					<div class="breadcrumbs" id="breadcrumbs">
+						<script type="text/javascript">
+							try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
+						</script>
+
+						<ul class="breadcrumb">
+							<li>
+								<i class="icon-home home-icon"></i>
+								<a href="#">系统设置</a>
+							</li>
+						</ul><!-- .breadcrumb -->
+
+						<div class="nav-search" id="nav-search">
+							<form class="form-search">
+								<span class="input-icon">
+									<input type="text" placeholder="Search ..." class="nav-search-input" id="nav-search-input" autocomplete="off" />
+									<i class="icon-search nav-search-icon"></i>
+								</span>
+							</form>
+						</div><!-- #nav-search -->
+					</div>
+
+					<div class="page-content">
+
+						<div class="page-header">
+							<h1>
+								系统设置								
+							</h1>
+						</div><!-- /.page-header -->
+
+
+
+					<form action="{{__HOST_}}/admin/setting/doEdit" method="post" class="form-horizontal" 
+						role="form" enctype="multipart/form-data" style="border:1px solid #eee;">
+						
+						<!-- table选项卡 -->
+						<ul id="myTab" class="nav nav-tabs" style="height:44px;">
+							<li class="active">
+								<a href="#basic" data-toggle="tab">
+									基本设置
+								</a>
+							</li>
+							<li><a href="#seo" data-toggle="tab">SEO设置</a></li>
+						</ul>
+
+						<div id="myTabContent" class="tab-content" style="border: none;">
+
+							<!-- 基本设置 -->
+							<div class="tab-pane fade in active" id="basic">
+                                <input type="hidden" name="id"  value="{{@list._id}}">
+
+								<div class="form-group">
+									<label class="col-sm-2 control-label no-padding-right" for="title">网站名称：</label>
+
+									<div class="col-sm-10">
+										<input type="text" id="title" value="{{list.site_title}}"  name="site_title" class="col-xs-10 col-sm-5" />
+									</div>
+								</div>
+
+							
+
+								<div class="form-group">
+									<label class="col-sm-2 control-label no-padding-right" for="title">网站logo：</label>
+
+									<div class="col-sm-10">
+										<input type="file" id="site_logo" onchange="uploadImg(this)" name="site_logo" class="col-xs-10 col-sm-5" style="width: 280px" />
+										{{if list.site_logo}}
+										<img src="{{__HOST__}}/{{list.site_logo}}" id="viewImg" style="width: 120px;height:80px;float:left; border: 1px solid rgb(140, 238, 241)">
+										{{/if}}
+
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label class="col-sm-2 control-label no-padding-right" for="title">网站备案号：</label>
+
+									<div class="col-sm-10">
+										<input type="text" id="author" value="{{list.site_icp}}"  name="site_icp" class="col-xs-10 col-sm-5" />
+									</div>
+                                </div>
+                                
+                                <div class="form-group">
+									<label class="col-sm-2 control-label no-padding-right" for="title">客服QQ：</label>
+
+									<div class="col-sm-10">
+										<input type="text" id="author" value="{{list.site_qq}}"  name="site_qq" class="col-xs-10 col-sm-5" />
+									</div>
+                                </div>
+                                
+                                <div class="form-group">
+									<label class="col-sm-2 control-label no-padding-right" for="title">客服电话：</label>
+
+									<div class="col-sm-10">
+										<input type="text" id="author" value="{{list.site_tel}}"  name="site_tel" class="col-xs-10 col-sm-5" />
+									</div>
+                                </div>
+                                
+                                <div class="form-group">
+									<label class="col-sm-2 control-label no-padding-right" for="title">公司地址：</label>
+
+									<div class="col-sm-10">
+										<input type="text" id="author" value="{{list.site_address}}"  name="site_address" class="col-xs-10 col-sm-5" />
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label class="col-sm-2 control-label no-padding-right">是否关闭网站：</label>
+									<div class="col-sm-10">
+										<label for="status1">是：</label><input type="radio" name="site_status"  id="status1" value="1" {{if list.site_status==1}} checked {{/if}}/>
+										&nbsp;
+										<label for="status2">否:</label><input type="radio" name="site_status" id="status2" value="0" {{if list.site_status==0}} checked {{/if}} />
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label class="col-sm-2 control-label no-padding-right" for="description"></label>
+		
+									<div class="col-sm-10">
+										<a href="#seo" data-toggle="tab"><button class="btn btn-primary">下一步操作</button></a>
+									</div>
+								</div>
+
+								
+							</div>
+
+							<!-- SEO设置 -->
+
+							<div class="tab-pane fade" id="seo">
+								<div class="form-group">
+									<label class="col-sm-2 control-label no-padding-right" for="keywords">网站关键字：</label>
+
+									<div class="col-sm-10">
+										<input type="text" id="keywords" value="{{list.site_keywords}}"  name="site_keywords" class="col-xs-10 col-sm-5" />
+									</div>
+								</div>
+								<div class="form-group" style="height:100px;">
+									<label class="col-sm-2 control-label no-padding-right" for="description">网站描述：</label>
+									<div class="col-sm-10">
+										<textarea  style="height:100px;" class="col-xs-10 col-sm-5"  name="site_description" id="description" cols="10" rows="10">{{list.site_description}}</textarea>
+									</div>
+								</div>
+
+
+								<div class="form-group">
+									<label class="col-sm-2 control-label no-padding-right" for="description"></label>
+		
+									<div class="col-sm-10">
+										<a href="#basic" data-toggle="tab"><button class="btn btn-primary">上一步操作</button></a>
+										<button type="submit" class="btn btn-primary">提交</button>
+									</div>
+								</div>
+							</div>
+
+						</div>
+
+						
+					</form>
+
+					</div>
+				</div><!-- /.main-content -->
+			
+			</div><!-- /.main-container-inner -->
+
+			<a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+				<i class="icon-double-angle-up icon-only bigger-110"></i>
+			</a>
+		</div><!-- /.main-container -->
+
+		{{include "admin/public/footer.html"}}
+
+
+		<script>
+			//实例化editor富文本编辑器
+			var ue = UE.getEditor('editor');
+			//设置富文本编辑器里面的内容
+			ue.addListener("ready",function(){
+				ue.setContent(`{{@list.content}}`)
+			})
+		</script>
+
+		<!-- 实时显示上传的图片 -->
+		<script>
+			function uploadImg(fileDom) {
+				// 获取图片数据对象
+				let file = fileDom.files[0];
+				let reader = new FileReader();
+				reader.readAsDataURL(file);
+
+				//确保文件成功获取，base64数据量比较大
+				reader.onload = function (event) {
+					let e = event || window.event
+					let img = document.getElementById("viewImg");
+					img.src = e.target.result;
+					img.style = "width: 120px;height:80px;float:left; border: 1px solid rgb(140, 238, 241);display: block"
+				}
+			}
+
+		</script>
+
+		<script type="text/javascript">
+			
+			$(function(){
+				
+				
+					function showErrorAlert (reason, detail) {
+						var msg='';
+						if (reason==='unsupported-file-type') { msg = "Unsupported format " +detail; }
+						else {
+							console.log("error uploading file", reason, detail);
+						}
+						$('<div class="alert"> <button type="button" class="close" data-dismiss="alert">&times;</button>'+ 
+						 '<strong>File upload error</strong> '+msg+' </div>').prependTo('#alerts');
+					}
+					
+					$('#editor1').ace_wysiwyg({
+						toolbar:
+						[
+							'font',
+							null,
+							'fontSize',
+							null,
+							{name:'bold', className:'btn-info'},
+							{name:'italic', className:'btn-info'},
+							{name:'strikethrough', className:'btn-info'},
+							{name:'underline', className:'btn-info'},
+							null,
+							{name:'insertunorderedlist', className:'btn-success'},
+							{name:'insertorderedlist', className:'btn-success'},
+							{name:'outdent', className:'btn-purple'},
+							{name:'indent', className:'btn-purple'},
+							null,
+							{name:'justifyleft', className:'btn-primary'},
+							{name:'justifycenter', className:'btn-primary'},
+							{name:'justifyright', className:'btn-primary'},
+							{name:'justifyfull', className:'btn-inverse'},
+							null,
+							{name:'createLink', className:'btn-pink'},
+							{name:'unlink', className:'btn-pink'},
+							null,
+							{name:'insertImage', className:'btn-success'},
+							null,
+							'foreColor',
+							null,
+							{name:'undo', className:'btn-grey'},
+							{name:'redo', className:'btn-grey'}
+						],
+						'wysiwyg': {
+							fileUploadError: showErrorAlert
+						}
+					}).prev().addClass('wysiwyg-style2');
+
+			})
+			
+
+		</script>
+	
+</body>
+</html>
+
